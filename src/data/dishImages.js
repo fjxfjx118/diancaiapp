@@ -10,21 +10,20 @@
 import placeholder from '../assets/dishes/placeholder.svg';
 
 // 示例：当你新增图片时请取消注释并替换路径
-import 凉拌鸡丝 from '../assets/dishes/凉拌鸡丝.jpg';
-import 水煮肉片 from '../assets/dishes/水煮肉片.jpg';
-import 白菜豆腐 from '../assets/dishes/白菜豆腐.jpg';
-import 韭菜鸡蛋 from '../assets/dishes/韭菜鸡蛋.jpg';
-import 蛋炒饭 from '../assets/dishes/蛋炒饭.jpg';
-import 紫菜清汤面 from '../assets/dishes/紫菜清汤面.jpg';
+import liangbanJisiImg from '../assets/dishes/凉拌鸡丝.jpg';
+import shuizhuRoupianImg from '../assets/dishes/水煮肉片.jpg';
+import baicaiDoufuImg from '../assets/dishes/白菜豆腐.jpg';
+import jiucaiJidanImg from '../assets/dishes/韭菜鸡蛋.jpg';
+import danchaofanImg from '../assets/dishes/蛋炒饭.jpg';
+
 const dishImages = {
   // 'gongbao-chicken': gongbaoChicken,
   // 如果暂未提供自定义图片，可以保持占位图
-  '凉拌鸡丝': 凉拌鸡丝,
-  '水煮肉片': 水煮肉片,
-  '白菜豆腐': 白菜豆腐,
-  '韭菜鸡蛋': 韭菜鸡蛋,
-  '蛋炒饭': 蛋炒饭,
-  '紫菜清汤面': 紫菜清汤面,
+  '凉拌鸡丝': liangbanJisiImg,
+  '水煮肉片': shuizhuRoupianImg,
+  '白菜豆腐': baicaiDoufuImg,
+  '韭菜鸡蛋': jiucaiJidanImg,
+  '蛋炒饭': danchaofanImg,
 };
 
 export const getDishImage = (imageKey) => {
@@ -36,5 +35,4 @@ export const getDishImage = (imageKey) => {
 };
 
 export default dishImages;
-
 
