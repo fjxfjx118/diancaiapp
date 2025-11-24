@@ -8,8 +8,8 @@
  */
 
 const WXPUSHER_CONFIG = {
-  appToken: 'AT_xxxxxxxxxxxxxxxxxxxxx',  // 你的 AppToken
-  uid: 'UID_xxxxxxxxxxxxxxxxxxxxx',      // 你的 UID（接收通知的微信用户ID）
+  appToken: 'AT_UEksqsZkCT6wLryl8c7VDpVSYb7tVXTw',  // 你的 AppToken
+  uid: 'UID_Y3guovHLXnPB1DFKYHATcQrB8HT0',      // 你的 UID（接收通知的微信用户ID）
   apiUrl: 'https://wxpusher.zjiecode.com/api/send/message'
 };
 
