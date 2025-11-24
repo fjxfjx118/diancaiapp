@@ -14,6 +14,7 @@ function App() {
   const [submitting, setSubmitting] = useState(false);
   const menuRefs = useRef({});
   const menuContainerRef = useRef(null);
+  const priceLabel = 'Kiss';
 
   // 加载菜单数据
   useEffect(() => {
@@ -137,7 +138,7 @@ function App() {
     <div className="flex flex-col h-screen bg-white overflow-hidden">
       {/* 顶部标题栏 */}
       <header className="bg-peach text-white px-4 py-4 shadow-md z-10">
-        <h1 className="text-xl font-bold text-center">F💕X Baby-Menu</h1>
+        <h1 className="text-xl font-bold text-center">💕 情侣点餐</h1>
       </header>
 
       {/* 主内容区 */}
@@ -178,7 +179,7 @@ function App() {
                         <div className="flex-1">
                           <div className="font-semibold text-gray-800">{item.name}</div>
                           <div className="text-peach-dark font-bold mt-1">
-                            ¥{parseFloat(item.price).toFixed(2)}
+                            {priceLabel}
                           </div>
                         </div>
                       </div>
@@ -230,7 +231,7 @@ function App() {
               <div>
                 <div className="text-gray-600 text-sm">共 {cart.length} 种</div>
                 <div className="text-peach-dark font-bold text-lg">
-                  ¥{totalPrice.toFixed(2)}
+                  {priceLabel}
                 </div>
               </div>
             </div>
@@ -280,7 +281,7 @@ function App() {
                       <div>
                         <div className="font-semibold text-gray-800">{item.name}</div>
                         <div className="text-gray-500 text-sm">
-                          ¥{parseFloat(item.price).toFixed(2)} × {item.quantity}
+                          {priceLabel} × {item.quantity}
                         </div>
                       </div>
                     </div>
@@ -320,7 +321,7 @@ function App() {
             <div className="flex items-center justify-between mb-4 p-4 bg-peach-light rounded-xl">
               <span className="font-bold text-gray-800">总计</span>
               <span className="text-peach-dark font-bold text-2xl">
-                ¥{totalPrice.toFixed(2)}
+                {priceLabel}
               </span>
             </div>
 
@@ -340,5 +341,3 @@ function App() {
 }
 
 export default App;
-
-
