@@ -6,7 +6,7 @@
 // ⚠️ 请替换为你的 WxPusher 配置
 // 在 WxPusher 官网 (https://wxpusher.zjiecode.com) 注册并获取以下信息：
 const WXPUSHER_CONFIG = {
-  appToken: 'AT_UEksqsZkCT6wLryl8c7VDpVSYb7tVXTw',  // 你的 AppToken
+  appToken: 'AT_c7p1iFJhg80zqJJqorEa4mpxWeB4VJXP',  // 你的 AppToken
   uid: 'UID_Y3guovHLXnPB1DFKYHATcQrB8HT0',          // 你的 UID（接收通知的微信用户ID）
   apiUrl: 'https://wxpusher.zjiecode.com/api/send/message'
 };
