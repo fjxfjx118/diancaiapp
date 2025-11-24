@@ -108,14 +108,18 @@ function App() {
 
     try {
       setSubmitting(true);
-      await submitOrder(cart, note);
+      const { notificationSent } = await submitOrder(cart, note);
       
       // 清空购物车和备注
       setCart([]);
       setNote('');
       setShowCheckout(false);
       
-      alert('订单提交成功！微信通知已发送 🎉');
+      if (notificationSent) {
+        alert('订单提交成功！微信通知已发送 🎉');
+      } else {
+        alert('订单提交成功，但微信通知发送失败，请稍后重试。');
+      }
     } catch (error) {
       console.error('提交订单失败:', error);
       alert('提交订单失败：' + (error.message || '请检查网络连接和配置'));
@@ -348,3 +352,4 @@ function App() {
 }
 
 export default App;
+
