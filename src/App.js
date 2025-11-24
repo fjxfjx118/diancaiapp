@@ -15,6 +15,13 @@ function App() {
   const menuRefs = useRef({});
   const menuContainerRef = useRef(null);
   const priceLabel = 'Kiss';
+  const formatPrice = (value) => {
+    const num = parseFloat(value);
+    if (Number.isNaN(num)) {
+      return priceLabel;
+    }
+    return `${priceLabel} ${num.toFixed(2)}`;
+  };
 
   // 加载菜单数据
   useEffect(() => {
@@ -179,7 +186,7 @@ function App() {
                         <div className="flex-1">
                           <div className="font-semibold text-gray-800">{item.name}</div>
                           <div className="text-peach-dark font-bold mt-1">
-                            {priceLabel}
+                            {formatPrice(item.price)}
                           </div>
                         </div>
                       </div>
@@ -231,7 +238,7 @@ function App() {
               <div>
                 <div className="text-gray-600 text-sm">共 {cart.length} 种</div>
                 <div className="text-peach-dark font-bold text-lg">
-                  {priceLabel}
+                  {formatPrice(totalPrice)}
                 </div>
               </div>
             </div>
@@ -281,7 +288,7 @@ function App() {
                       <div>
                         <div className="font-semibold text-gray-800">{item.name}</div>
                         <div className="text-gray-500 text-sm">
-                          {priceLabel} × {item.quantity}
+                          {formatPrice(item.price)} × {item.quantity}
                         </div>
                       </div>
                     </div>
@@ -321,7 +328,7 @@ function App() {
             <div className="flex items-center justify-between mb-4 p-4 bg-peach-light rounded-xl">
               <span className="font-bold text-gray-800">总计</span>
               <span className="text-peach-dark font-bold text-2xl">
-                {priceLabel}
+                {formatPrice(totalPrice)}
               </span>
             </div>
 
@@ -341,3 +348,4 @@ function App() {
 }
 
 export default App;
+
