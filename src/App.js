@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { fetchMenu } from './lib/supabaseClient';
 import { submitOrder } from './utils/orderService';
+import { getDishImage } from './data/dishImages';
 
 function App() {
   const [menu, setMenu] = useState([]);
@@ -136,7 +137,7 @@ function App() {
     <div className="flex flex-col h-screen bg-white overflow-hidden">
       {/* 顶部标题栏 */}
       <header className="bg-peach text-white px-4 py-4 shadow-md z-10">
-        <h1 className="text-xl font-bold text-center">💕 F💕X Baby-menu</h1>
+        <h1 className="text-xl font-bold text-center">F💕X Baby-Menu</h1>
       </header>
 
       {/* 主内容区 */}
@@ -157,28 +158,39 @@ function App() {
                 {category}
               </h2>
               <div className="px-4">
-                {menuByCategory[category]?.map(item => (
-                  <div
-                    key={item.id}
-                    className="flex items-center justify-between py-4 border-b border-gray-100"
-                  >
-                    <div className="flex items-center flex-1">
-                      <span className="text-3xl mr-3">{item.icon || '🍽️'}</span>
-                      <div className="flex-1">
-                        <div className="font-semibold text-gray-800">{item.name}</div>
-                        <div className="text-peach-dark font-bold mt-1">
-                          ¥{parseFloat(item.price).toFixed(2)}
+                {menuByCategory[category]?.map(item => {
+                  const imageSrc = getDishImage(item.image_key);
+                  return (
+                    <div
+                      key={item.id}
+                      className="flex items-center justify-between py-4 border-b border-gray-100"
+                    >
+                      <div className="flex items-center flex-1">
+                        {imageSrc ? (
+                          <img
+                            src={imageSrc}
+                            alt={item.name}
+                            className="w-16 h-16 object-cover rounded-2xl mr-3 border border-peach-light shadow-sm"
+                          />
+                        ) : (
+                          <span className="text-3xl mr-3">{item.icon || '🍽️'}</span>
+                        )}
+                        <div className="flex-1">
+                          <div className="font-semibold text-gray-800">{item.name}</div>
+                          <div className="text-peach-dark font-bold mt-1">
+                            ¥{parseFloat(item.price).toFixed(2)}
+                          </div>
                         </div>
                       </div>
+                      <button
+                        onClick={() => addToCart(item)}
+                        className="ml-4 bg-peach hover:bg-peach-dark text-white rounded-full w-10 h-10 flex items-center justify-center shadow-md transition-all active:scale-95"
+                      >
+                        <span className="text-xl">+</span>
+                      </button>
                     </div>
-                    <button
-                      onClick={() => addToCart(item)}
-                      className="ml-4 bg-peach hover:bg-peach-dark text-white rounded-full w-10 h-10 flex items-center justify-center shadow-md transition-all active:scale-95"
-                    >
-                      <span className="text-xl">+</span>
-                    </button>
-                  </div>
-                ))}
+                  );
+                })}
               </div>
             </div>
           ))}
@@ -248,37 +260,48 @@ function App() {
 
             {/* 购物车商品列表 */}
             <div className="mb-4">
-              {cart.map(item => (
-                <div
-                  key={item.id}
-                  className="flex items-center justify-between py-3 border-b border-gray-100"
-                >
-                  <div className="flex items-center flex-1">
-                    <span className="text-2xl mr-3">{item.icon || '🍽️'}</span>
-                    <div>
-                      <div className="font-semibold text-gray-800">{item.name}</div>
-                      <div className="text-gray-500 text-sm">
-                        ¥{parseFloat(item.price).toFixed(2)} × {item.quantity}
+              {cart.map(item => {
+                const imageSrc = getDishImage(item.image_key);
+                return (
+                  <div
+                    key={item.id}
+                    className="flex items-center justify-between py-3 border-b border-gray-100"
+                  >
+                    <div className="flex items-center flex-1">
+                      {imageSrc ? (
+                        <img
+                          src={imageSrc}
+                          alt={item.name}
+                          className="w-12 h-12 object-cover rounded-xl mr-3 border border-peach-light"
+                        />
+                      ) : (
+                        <span className="text-2xl mr-3">{item.icon || '🍽️'}</span>
+                      )}
+                      <div>
+                        <div className="font-semibold text-gray-800">{item.name}</div>
+                        <div className="text-gray-500 text-sm">
+                          ¥{parseFloat(item.price).toFixed(2)} × {item.quantity}
+                        </div>
                       </div>
                     </div>
+                    <div className="flex items-center">
+                      <button
+                        onClick={() => removeFromCart(item.id)}
+                        className="bg-gray-200 text-gray-700 rounded-full w-8 h-8 flex items-center justify-center mr-2"
+                      >
+                        −
+                      </button>
+                      <span className="w-8 text-center font-semibold">{item.quantity}</span>
+                      <button
+                        onClick={() => addToCart(item)}
+                        className="bg-peach text-white rounded-full w-8 h-8 flex items-center justify-center ml-2"
+                      >
+                        +
+                      </button>
+                    </div>
                   </div>
-                  <div className="flex items-center">
-                    <button
-                      onClick={() => removeFromCart(item.id)}
-                      className="bg-gray-200 text-gray-700 rounded-full w-8 h-8 flex items-center justify-center mr-2"
-                    >
-                      −
-                    </button>
-                    <span className="w-8 text-center font-semibold">{item.quantity}</span>
-                    <button
-                      onClick={() => addToCart(item)}
-                      className="bg-peach text-white rounded-full w-8 h-8 flex items-center justify-center ml-2"
-                    >
-                      +
-                    </button>
-                  </div>
-                </div>
-              ))}
+                );
+              })}
             </div>
 
             {/* 备注输入 */}
@@ -317,4 +340,5 @@ function App() {
 }
 
 export default App;
+
 
