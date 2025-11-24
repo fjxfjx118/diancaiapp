@@ -36,10 +36,16 @@ export const submitOrder = async (cartItems, note = '') => {
 
     // Step 2: 订单保存成功后，立即发送微信通知
     console.log('正在发送微信通知...');
-    await sendWxPusherNotification(savedOrder, cartItems, note);
-    console.log('微信通知发送成功！');
+    let notificationSent = false;
+    try {
+      await sendWxPusherNotification(savedOrder, cartItems, note);
+      notificationSent = true;
+      console.log('微信通知发送成功！');
+    } catch (notifyError) {
+      console.error('微信通知发送失败，但订单已成功保存:', notifyError);
+    }
 
-    return savedOrder;
+    return { order: savedOrder, notificationSent };
   } catch (error) {
     console.error('提交订单失败:', error);
     throw error;
