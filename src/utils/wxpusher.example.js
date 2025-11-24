@@ -1,81 +1,21 @@
 /**
- * WxPusher 配置示例
- * 
- * 使用说明：
- * 1. 复制此文件为 wxpusher.js
- * 2. 替换 REPLACE_WITH_MY_TOKEN 和 REPLACE_WITH_MY_UID 为你的实际值
- * 3. 访问 https://wxpusher.zjiecode.com 注册并获取配置信息
+ * WxPusher 微信推送服务
+ * * ⚠️ 警告：该版本用于隔离测试，已完全禁用通知发送功能。
  */
 
+// 保持 WXPUSHER_CONFIG 不变，但函数体内所有逻辑被移除
 const WXPUSHER_CONFIG = {
-  appToken: 'AT_c7p1iFJhg80zqJJqorEa4mpxWeB4VJXP',  // 你的 AppToken
-  uid: 'UID_Y3guovHLXnPB1DFKYHATcQrB8HT0',      // 你的 UID（接收通知的微信用户ID）
+  appToken: process.env.WXPUSHER_APP_TOKEN, 
+  uid: process.env.WXPUSHER_UID,           
   apiUrl: 'https://wxpusher.zjiecode.com/api/send/message'
 };
 
 /**
- * 发送微信通知
+ * 发送微信通知 (隔离测试版)
+ * 作用：立即返回成功，以确保订单提交事务不会因通知失败而回滚。
  */
 export const sendWxPusherNotification = async (orderData, items, note) => {
-  try {
-    // 构建菜品列表 HTML
-    const itemsHtml = items
-      .map(item => {
-        const itemTotal = (item.price * item.quantity).toFixed(2);
-        return `<p style="margin: 8px 0; padding-left: 20px;">• ${item.icon || '🍽️'} ${item.name} × ${item.quantity} = ¥${itemTotal}</p>`;
-      })
-      .join('');
-
-    // 构建完整的 HTML 内容
-    const content = `
-      <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;">
-        <h1 style="color: #FF6B9D; margin-bottom: 20px;">❤️ 新的爱心订单来了！</h1>
-        <div style="background: #FFF5F7; padding: 15px; border-radius: 8px; margin-bottom: 15px;">
-          <h2 style="color: #333; margin-bottom: 10px; font-size: 18px;">📋 订单详情</h2>
-          ${itemsHtml}
-          <hr style="border: none; border-top: 1px solid #FFD1D1; margin: 15px 0;">
-          <p style="font-weight: bold; color: #FF6B9D; font-size: 16px;">
-            总计：¥${orderData.total_price.toFixed(2)}
-          </p>
-        </div>
-        ${note ? `<div style="background: #FFF9E6; padding: 10px; border-radius: 6px; margin-top: 10px;">
-          <p style="margin: 0; color: #666;"><strong>备注：</strong>${note}</p>
-        </div>` : ''}
-        <p style="color: #999; font-size: 12px; margin-top: 15px;">
-          ⏰ 下单时间：${new Date().toLocaleString('zh-CN')}
-        </p>
-      </div>
-    `;
-
-    // 构建请求体
-    const requestBody = {
-      appToken: WXPUSHER_CONFIG.appToken,
-      content: content,
-      summary: '老婆饿了，快去查看！',
-      contentType: 2, // 2 表示 HTML 格式
-      uids: [WXPUSHER_CONFIG.uid]
-    };
-
-    // 发送 POST 请求
-    const response = await fetch(WXPUSHER_CONFIG.apiUrl, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(requestBody)
-    });
-
-    const result = await response.json();
-
-    if (!response.ok || result.code !== 1000) {
-      throw new Error(result.msg || '发送通知失败');
-    }
-
-    console.log('微信通知发送成功:', result);
-    return result;
-  } catch (error) {
-    console.error('发送微信通知失败:', error);
-    throw error;
-  }
+    // ⚠️ 订单提交的事务在这里被安全地“通过”了
+    console.log("【隔离测试】已安全跳过 WxPusher 通知，不会导致订单回滚。");
+    return { success: true, reason: 'WxPusher disabled for testing' };
 };
-
