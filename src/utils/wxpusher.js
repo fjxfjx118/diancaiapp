@@ -3,15 +3,11 @@
  * 用于向微信发送订单通知
  */
 
-// ⚠️ 配置将从 Vercel 环境变量中读取
-// 请确保在 Vercel Settings -> Environment Variables 中设置 WXPUSHER_APP_TOKEN 和 WXPUSHER_UID
+// ⚠️ 请替换为你的 WxPusher 配置
+// 在 WxPusher 官网 (https://wxpusher.zjiecode.com) 注册并获取以下信息：
 const WXPUSHER_CONFIG = {
-  // 假设你的 Vercel 环境变量键名是 WXPUSHER_APP_TOKEN
-  appToken: process.env.WXPUSHER_APP_TOKEN, 
-  
-  // 假设你的 Vercel 环境变量键名是 WXPUSHER_UID
-  uid: process.env.WXPUSHER_UID,           
-  
+  appToken: 'AT_UEksqsZkCT6wLryl8c7VDpVSYb7tVXTw',  // 你的 AppToken
+  uid: 'UID_Y3guovHLXnPB1DFKYHATcQrB8HT0',          // 你的 UID（接收通知的微信用户ID）
   apiUrl: 'https://wxpusher.zjiecode.com/api/send/message'
 };
 
@@ -22,18 +18,11 @@ const WXPUSHER_CONFIG = {
  * @param {string} note - 备注
  */
 export const sendWxPusherNotification = async (orderData, items, note) => {
-  // 🌟 1. 安全检查：如果缺少关键配置，直接跳过通知，防止抛出错误导致订单回滚
-  if (!WXPUSHER_CONFIG.appToken || !WXPUSHER_CONFIG.uid) {
-    console.error("【WxPusher 警告】缺少 AppToken 或 UID 配置，已跳过通知发送。");
-    return { success: false, reason: 'Missing configuration' };
-  }
-  
   try {
     // 构建菜品列表 HTML
     const itemsHtml = items
       .map(item => {
-        // 确保 total_price 是数字类型
-        const itemTotal = (parseFloat(item.price) * item.quantity).toFixed(2);
+        const itemTotal = (item.price * item.quantity).toFixed(2);
         return `<p style="margin: 8px 0; padding-left: 20px;">• ${item.icon || '🍽️'} ${item.name} × ${item.quantity} = ¥${itemTotal}</p>`;
       })
       .join('');
@@ -79,17 +68,14 @@ export const sendWxPusherNotification = async (orderData, items, note) => {
 
     const result = await response.json();
 
-    // 🌟 2. 失败检查：如果 API 返回失败
     if (!response.ok || result.code !== 1000) {
-      console.error('【WxPusher 失败】发送通知失败 (API返回错误):', result.msg || '未知错误');
-      return { success: false, reason: result.msg || 'API Error' }; // 阻止错误抛出
+      throw new Error(result.msg || '发送通知失败');
     }
 
     console.log('微信通知发送成功:', result);
     return result;
   } catch (error) {
-    // 🌟 3. Catch 块：如果发生网络或代码错误
-    console.error('【WxPusher 失败】发送微信通知失败 (网络或代码错误):', error);
-    return { success: false, reason: error.message || 'Network/Runtime Error' }; // 阻止错误抛出
+    console.error('发送微信通知失败:', error);
+    throw error;
   }
 };
