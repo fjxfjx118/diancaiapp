@@ -1,35 +1,33 @@
 /**
- * WxPusher 微信推送服务 (安全修正版)
- * 作用：读取环境变量，并在通知失败时安全返回，防止订单事务回滚。
+ * WxPusher 微信推送服务
+ * 用于向微信发送订单通知
  */
 
-// ⚠️ 配置现在从 Vercel 环境变量中读取
+// ⚠️ 请替换为你的 WxPusher 配置
+// 在 WxPusher 官网 (https://wxpusher.zjiecode.com) 注册并获取以下信息：
 const WXPUSHER_CONFIG = {
-  // 必须在 Vercel 中设置 WXPUSHER_APP_TOKEN
-  appToken: process.env.WXPUSHER_APP_TOKEN, 
-  
-  // 必须在 Vercel 中设置 WXPUSHER_UID
-  uid: process.env.WXPUSHER_UID,           
-  
+  appToken: 'AT_c7p1iFJhg80zqJJqorEa4mpxWeB4VJXP',  // 你的 AppToken
+  uid: 'UID_Y3guovHLXnPB1DFKYHATcQrB8HT0',          // 你的 UID（接收通知的微信用户ID）
   apiUrl: 'https://wxpusher.zjiecode.com/api/send/message'
 };
 
+/**
+ * 发送微信通知
+ * @param {Object} orderData - 订单数据
+ * @param {Array} items - 购物车商品列表
+ * @param {string} note - 备注
+ */
 export const sendWxPusherNotification = async (orderData, items, note) => {
-  // 1. 检查配置：如果缺少关键配置，直接跳过，防止 API 调用失败
-  if (!WXPUSHER_CONFIG.appToken || !WXPUSHER_CONFIG.uid) {
-    console.error("【WxPusher 警告】缺少 AppToken 或 UID 配置，已跳过通知发送。");
-    return { success: false, reason: 'Missing configuration' };
-  }
-  
   try {
-    // [省略 HTML 构建代码，与你的原代码相同]
-    const itemsHtml = items //... (构建 itemsHtml 的代码)
+    // 构建菜品列表 HTML
+    const itemsHtml = items
       .map(item => {
-        const itemTotal = (parseFloat(item.price) * item.quantity).toFixed(2);
+        const itemTotal = (item.price * item.quantity).toFixed(2);
         return `<p style="margin: 8px 0; padding-left: 20px;">• ${item.icon || '🍽️'} ${item.name} × ${item.quantity} = ¥${itemTotal}</p>`;
       })
       .join('');
 
+    // 构建完整的 HTML 内容
     const content = `
       <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;">
         <h1 style="color: #FF6B9D; margin-bottom: 20px;">❤️ 新的爱心订单来了！</h1>
@@ -49,8 +47,8 @@ export const sendWxPusherNotification = async (orderData, items, note) => {
         </p>
       </div>
     `;
-    
-    // 构建请求体 (使用环境变量读取到的值)
+
+    // 构建请求体
     const requestBody = {
       appToken: WXPUSHER_CONFIG.appToken,
       content: content,
@@ -62,24 +60,23 @@ export const sendWxPusherNotification = async (orderData, items, note) => {
     // 发送 POST 请求
     const response = await fetch(WXPUSHER_CONFIG.apiUrl, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: {
+        'Content-Type': 'application/json'
+      },
       body: JSON.stringify(requestBody)
     });
 
     const result = await response.json();
 
-    // 2. API 失败检查：如果 API 返回失败
     if (!response.ok || result.code !== 1000) {
-      console.error('【WxPusher 失败】发送通知失败 (API返回错误):', result.msg || '未知错误');
-      return { success: false, reason: result.msg || 'API Error' }; // 阻止错误抛出
+      throw new Error(result.msg || '发送通知失败');
     }
 
     console.log('微信通知发送成功:', result);
     return result;
-
   } catch (error) {
-    // 3. Catch 块：如果发生网络或代码错误，只记录，不抛出
-    console.error('【WxPusher 失败】发送微信通知失败 (网络或代码错误):', error);
-    return { success: false, reason: error.message || 'Network/Runtime Error' };
+    console.error('发送微信通知失败:', error);
+    throw error;
   }
 };
+
