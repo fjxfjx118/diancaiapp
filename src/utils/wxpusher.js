@@ -52,7 +52,7 @@ export const sendWxPusherNotification = async (orderData, items, note) => {
     const requestBody = {
       appToken: WXPUSHER_CONFIG.appToken,
       content: content,
-      summary: '老婆饿了，快去查看！',
+      summary: '晴宝宝饿了，快去查看！',
       contentType: 2, // 2 表示 HTML 格式
       uids: [WXPUSHER_CONFIG.uid]
     };
