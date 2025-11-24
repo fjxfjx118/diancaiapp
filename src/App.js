@@ -136,7 +136,7 @@ function App() {
     <div className="flex flex-col h-screen bg-white overflow-hidden">
       {/* 顶部标题栏 */}
       <header className="bg-peach text-white px-4 py-4 shadow-md z-10">
-        <h1 className="text-xl font-bold text-center">💕 情侣点餐</h1>
+        <h1 className="text-xl font-bold text-center">💕 F💕X Baby-menu</h1>
       </header>
 
       {/* 主内容区 */}
