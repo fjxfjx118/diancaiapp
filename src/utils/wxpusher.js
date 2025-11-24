@@ -5,11 +5,17 @@
 
 // ⚠️ 请替换为你的 WxPusher 配置
 // 在 WxPusher 官网 (https://wxpusher.zjiecode.com) 注册并获取以下信息：
+// **在你代码的 WxPusher 配置文件中**
 const WXPUSHER_CONFIG = {
-  appToken: 'AT_UEksqsZkCT6wLryl8c7VDpVSYb7tVXTw',  // 你的 AppToken
-  uid: 'UID_Y3guovHLXnPB1DFKYHATcQrB8HT0',          // 你的 UID（接收通知的微信用户ID）
+  // 1. 决定一个键名，例如 WXPUSHER_APP_TOKEN
+  appToken: process.env.WXPUSHER_APP_TOKEN, // 修改为读取环境变量
+  
+  // 2. 决定另一个键名，例如 WXPUSHER_UID
+  uid: process.env.WXPUSHER_UID,           // 修改为读取环境变量
+  
   apiUrl: 'https://wxpusher.zjiecode.com/api/send/message'
 };
+// ...
 
 /**
  * 发送微信通知
