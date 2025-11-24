@@ -10,23 +10,21 @@
 import placeholder from '../assets/dishes/placeholder.svg';
 
 // 示例：当你新增图片时请取消注释并替换路径
-// import gongbaoChicken from '../assets/dishes/gongbao-chicken.jpg';
-
+import 凉拌鸡丝 from '../assets/dishes/凉拌鸡丝.jpg';
+import 水煮肉片 from '../assets/dishes/水煮肉片.jpg';
+import 白菜豆腐 from '../assets/dishes/白菜豆腐.jpg';
+import 韭菜鸡蛋 from '../assets/dishes/韭菜鸡蛋.jpg';
+import 蛋炒饭 from '../assets/dishes/蛋炒饭.jpg';
+import 紫菜清汤面 from '../assets/dishes/紫菜清汤面.jpg';
 const dishImages = {
   // 'gongbao-chicken': gongbaoChicken,
   // 如果暂未提供自定义图片，可以保持占位图
-  'gongbao-chicken': placeholder,
-  'mapo-tofu': placeholder,
-  'sweet-sour-pork': placeholder,
-  'white-cut-chicken': placeholder,
-  'cucumber-salad': placeholder,
-  'mouthwatering-chicken': placeholder,
-  'egg-drop-soup': placeholder,
-  'seaweed-egg-soup': placeholder,
-  'white-rice': placeholder,
-  'egg-fried-rice': placeholder,
-  'coke': placeholder,
-  'sprite': placeholder,
+  '凉拌鸡丝': 凉拌鸡丝,
+  '水煮肉片': 水煮肉片,
+  '白菜豆腐': 白菜豆腐,
+  '韭菜鸡蛋': 韭菜鸡蛋,
+  '蛋炒饭': 蛋炒饭,
+  '紫菜清汤面': 紫菜清汤面,
 };
 
 export const getDishImage = (imageKey) => {
@@ -38,4 +36,5 @@ export const getDishImage = (imageKey) => {
 };
 
 export default dishImages;
+
 
