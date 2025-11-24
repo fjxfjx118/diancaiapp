@@ -6,7 +6,7 @@
 // ⚠️ 请替换为你的 WxPusher 配置
 // 在 WxPusher 官网 (https://wxpusher.zjiecode.com) 注册并获取以下信息：
 const WXPUSHER_CONFIG = {
-  appToken: 'AT_c7p1iFJhg80zqJJqorEa4mpxWeB4VJXP',  // 你的 AppToken
+  appToken: 'AT_UEksqsZkCT6wLryl8c7VDpVSYb7tVXTw',  // 你的 AppToken
   uid: 'UID_Y3guovHLXnPB1DFKYHATcQrB8HT0',          // 你的 UID（接收通知的微信用户ID）
   apiUrl: 'https://wxpusher.zjiecode.com/api/send/message'
 };
@@ -20,10 +20,18 @@ const WXPUSHER_CONFIG = {
 export const sendWxPusherNotification = async (orderData, items, note) => {
   try {
     // 构建菜品列表 HTML
+    const formatPrice = (value) => {
+      const num = parseFloat(value);
+      if (Number.isNaN(num)) {
+        return 'Kiss';
+      }
+      return `Kiss ${num.toFixed(2)}`;
+    };
+
     const itemsHtml = items
       .map(item => {
         const itemTotal = (item.price * item.quantity).toFixed(2);
-        return `<p style="margin: 8px 0; padding-left: 20px;">• ${item.icon || '🍽️'} ${item.name} × ${item.quantity} = ¥${itemTotal}</p>`;
+        return `<p style="margin: 8px 0; padding-left: 20px;">• ${item.icon || '🍽️'} ${item.name} × ${item.quantity} = ${formatPrice(itemTotal)}</p>`;
       })
       .join('');
 
@@ -36,7 +44,7 @@ export const sendWxPusherNotification = async (orderData, items, note) => {
           ${itemsHtml}
           <hr style="border: none; border-top: 1px solid #FFD1D1; margin: 15px 0;">
           <p style="font-weight: bold; color: #FF6B9D; font-size: 16px;">
-            总计：¥${orderData.total_price.toFixed(2)}
+            总计：${formatPrice(orderData.total_price)}
           </p>
         </div>
         ${note ? `<div style="background: #FFF9E6; padding: 10px; border-radius: 6px; margin-top: 10px;">
