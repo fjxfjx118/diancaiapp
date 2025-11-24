@@ -27,12 +27,38 @@ CREATE INDEX IF NOT EXISTS idx_menu_category ON menu(category);
 -- 为 orders 表创建索引（优化时间查询）
 CREATE INDEX IF NOT EXISTS idx_orders_created_at ON orders(created_at DESC);
 
--- 插入示例菜单数据（可选）
-INSERT INTO menu (name, category, price, icon, image_key) VALUES
-  ('韭菜鸡蛋', '热菜', 28.00, '🥚', '韭菜鸡蛋'),
-  ('水煮肉片', '热菜', 42.00, '🌶️', '水煮肉片'),
-  ('白菜豆腐', '热菜', 26.00, '🥬', '白菜豆腐'),
-  ('凉拌鸡丝', '凉菜', 24.00, '🥗', '凉拌鸡丝'),
-  ('蛋炒饭', '主食', 18.00, '🍚', '蛋炒饭')
-ON CONFLICT DO NOTHING;
+-- 更新示例菜单数据（可选）
+UPDATE menu
+SET category = '热菜',
+    price = 28.00,
+    icon = '🥚',
+    image_key = '韭菜鸡蛋'
+WHERE name = '韭菜鸡蛋';
 
+UPDATE menu
+SET category = '热菜',
+    price = 42.00,
+    icon = '🌶️',
+    image_key = '水煮肉片'
+WHERE name = '水煮肉片';
+
+UPDATE menu
+SET category = '热菜',
+    price = 26.00,
+    icon = '🥬',
+    image_key = '白菜豆腐'
+WHERE name = '白菜豆腐';
+
+UPDATE menu
+SET category = '凉菜',
+    price = 24.00,
+    icon = '🥗',
+    image_key = '凉拌鸡丝'
+WHERE name = '凉拌鸡丝';
+
+UPDATE menu
+SET category = '主食',
+    price = 18.00,
+    icon = '🍚',
+    image_key = '蛋炒饭'
+WHERE name = '蛋炒饭';
