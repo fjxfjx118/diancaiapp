@@ -29,10 +29,10 @@ CREATE INDEX IF NOT EXISTS idx_orders_created_at ON orders(created_at DESC);
 
 -- 插入示例菜单数据（可选）
 INSERT INTO menu (name, category, price, icon, image_key) VALUES
-  ('韭菜鸡蛋', '热菜', 38.00, '🍗', 'gongbao-chicken'),
-  ('水煮肉片', '热菜', 28.00, '🌶️', 'mapo-tofu'),
-  ('白菜豆腐', '热菜', 42.00, '🍖', 'sweet-sour-pork'),
-  ('凉拌鸡丝', '凉菜', 35.00, '🐔', 'white-cut-chicken'),
-  ('紫菜清汤面', '主食', 3.00, '🍚', 'white-rice'),
-  ('蛋炒饭', '主食', 15.00, '🍛', 'egg-fried-rice'),
+  ('韭菜鸡蛋', '热菜', 28.00, '🥚', '韭菜鸡蛋'),
+  ('水煮肉片', '热菜', 42.00, '🌶️', '水煮肉片'),
+  ('白菜豆腐', '热菜', 26.00, '🥬', '白菜豆腐'),
+  ('凉拌鸡丝', '凉菜', 24.00, '🥗', '凉拌鸡丝'),
+  ('蛋炒饭', '主食', 18.00, '🍚', '蛋炒饭')
 ON CONFLICT DO NOTHING;
+
